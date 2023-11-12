@@ -1,6 +1,6 @@
 # fullstack_app
 
-A new Flutter project.
+A new Flutter project creating an application for creating, sharing, and tracking weight lifting programs.
 
 ## Getting Started
 
