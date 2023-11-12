@@ -27,21 +27,93 @@ class MyApp extends StatelessWidget {
 
 class MyAppState extends ChangeNotifier {
   var current = WordPair.random();
+
+  String currentExercise = "";
+  int i = 0;
+  void getNext() {
+    current = WordPair.random();
+    notifyListeners();
+  }
+
+  void getNextExercise() {
+    List<String> weightLiftingExercises = [
+      'Bench Press',
+      'Deadlift',
+      'Squat',
+      'Overhead Press',
+      'Barbell Row',
+      'Bicep Curl',
+      'Tricep Extension',
+      'Leg Press',
+      'Pull Up',
+      'Dumbbell Fly'
+    ];
+
+    if (i == weightLiftingExercises.length) {
+      i = 0;
+    }
+    currentExercise = weightLiftingExercises[i];
+
+    i += 1;
+  }
 }
 
 class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
+    // not good to access appState
+    // widgets should take only what they need
+
+    var pair = appState.current;
+    var exercise = appState.currentExercise;
 
     return Scaffold(
       body: Column(
         children: [
-          Text('Hello Full Stack User'),
-          Text(appState.current.asLowerCase),
-          Text('Its time to get to work.'),
+          Align(
+            alignment: Alignment.center,
+            child: Text('Hello Full Stack User'),
+          ),
+
+          Text(''),
+          BigCard(pair: pair, exercise: exercise),
+          // Text('Its time to get to work.'),
+          ElevatedButton(
+              onPressed: () {
+                appState.getNext();
+                appState.getNextExercise();
+              },
+              child: Text('next exercise'))
         ],
       ),
+    );
+  }
+}
+
+class BigCard extends StatelessWidget {
+  const BigCard({
+    super.key,
+    required this.pair,
+    required this.exercise,
+  });
+
+  final WordPair pair;
+  final String exercise;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          //child: Text(pair.asUpperCase),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(exercise.toUpperCase()),
+        )
+      ],
     );
   }
 }
