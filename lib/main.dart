@@ -78,7 +78,7 @@ class MyHomePage extends StatelessWidget {
         children: [
           Align(
             alignment: Alignment.center,
-            child: Text('Hello Full Stack User'),
+            child: Text('Hello FullStack User'),
           ),
 
           Text(''),
@@ -189,3 +189,91 @@ class Set extends StatelessWidget {
     );
   }
 }
+
+class Workout {
+  final String? date;
+  final String? duration;
+  final List<Exercise>? exercises;
+
+  Workout({this.date, this.duration, this.exercises});
+
+  factory Workout.fromJson(Map<String, dynamic> json) {
+    var exercisesFromJson = json['exercises'] as List;
+    List<Exercise> exerciseList =
+        exercisesFromJson.map((i) => Exercise.fromJson(i)).toList();
+
+    return Workout(
+      date: json['date'],
+      duration: json['duration'],
+      exercises: exerciseList,
+    );
+  }
+}
+
+class Exercise {
+  final String? name;
+  final List<WorkingSet>? sets;
+
+  Exercise({this.name, this.sets});
+
+  factory Exercise.fromJson(Map<String, dynamic> json) {
+    var setsFromJson = json['sets'] as List;
+    List<WorkingSet> setsList =
+        setsFromJson.map((i) => WorkingSet.fromJson(i)).toList();
+
+    return Exercise(
+      name: json['name'],
+      sets: setsList,
+    );
+  }
+}
+
+class WorkingSet {
+  final int? reps;
+  final int? weight;
+
+  WorkingSet({this.reps, this.weight});
+
+  factory WorkingSet.fromJson(Map<String, dynamic> json) {
+    return WorkingSet(
+      reps: json['reps'],
+      weight: json['weight'],
+    );
+  }
+}
+
+
+// example json
+
+// {
+//   "Workout": {
+//     "date": "2023-05-01",
+//     "duration": "60 minutes",
+//     "exercises": [
+//       {
+//         "name": "Bench Press",
+//         "sets": [
+//           {"reps": 10, "weight": 50},
+//           {"reps": 8, "weight": 60},
+//           {"reps": 6, "weight": 70}
+//         ]
+//       },
+//       {
+//         "name": "Squat",
+//         "sets": [
+//           {"reps": 10, "weight": 80},
+//           {"reps": 8, "weight": 90},
+//           {"reps": 6, "weight": 100}
+//         ]
+//       },
+//       {
+//         "name": "Deadlift",
+//         "sets": [
+//           {"reps": 5, "weight": 100},
+//           {"reps": 5, "weight": 120},
+//           {"reps": 5, "weight": 140}
+//         ]
+//       }
+//     ]
+//   }
+// }
