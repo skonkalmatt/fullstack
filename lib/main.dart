@@ -71,7 +71,10 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: Text('Exercise Navigator')),
+        appBar: AppBar(
+          title: Text('FullStack'),
+          centerTitle: true,
+        ),
         body:
             ExerciseNavigator(exercises: exercises), // pass in workout instead
       ),
@@ -380,13 +383,24 @@ class _ExerciseNavigatorState extends State<ExerciseNavigator> {
               reps: set.reps,
             )),
         SizedBox(height: 20),
-        ElevatedButton(
-          onPressed: previousExercise,
-          child: Text('Back'),
-        ),
-        ElevatedButton(
-          onPressed: nextExercise,
-          child: Text('Next'),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                onPressed: previousExercise,
+                child: Text('Back'),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                onPressed: nextExercise,
+                child: Text('Next'),
+              ),
+            ),
+          ],
         ),
       ],
     );
