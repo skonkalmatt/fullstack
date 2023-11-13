@@ -2,6 +2,8 @@ import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'dart:convert';
+
 void main() {
   runApp(MyApp());
 }
@@ -9,17 +11,69 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  // @override
+  // Widget build(BuildContext context) {
+  //   return ChangeNotifierProvider(
+  //     create: (context) => MyAppState(),
+  //     child: MaterialApp(
+  //       title: 'Namer App',
+  //       theme: ThemeData(
+  //         useMaterial3: true,
+  //         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
+  //       ),
+  //       home: MyHomePage(),
+  //     ),
+  //   );
+  // }
+
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => MyAppState(),
-      child: MaterialApp(
-        title: 'Namer App',
-        theme: ThemeData(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
-        ),
-        home: MyHomePage(),
+    String jsonString = '''{
+  "exercises": [
+    {
+      "name": "Bench Press",
+      "sets": [
+        {"reps": 10, "weight": 50},
+        {"reps": 8, "weight": 60},
+        {"reps": 6, "weight": 70}
+      ]
+    },
+    {
+      "name": "Squat",
+      "sets": [
+        {"reps": 10, "weight": 80},
+        {"reps": 8, "weight": 90},
+        {"reps": 6, "weight": 100}
+      ]
+    },
+    {
+      "name": "Deadlift",
+      "sets": [
+        {"reps": 5, "weight": 100},
+        {"reps": 5, "weight": 120},
+        {"reps": 5, "weight": 140}
+      ]
+    }
+  ]
+}''';
+
+    Map<String, dynamic> jsonMap = json.decode(jsonString);
+    List<dynamic> jsonExercises = jsonMap['exercises'];
+    List<Exercise> exercises =
+        jsonExercises.map((json) => Exercise.fromJson(json)).toList();
+
+    // List<Exercise> exercises = [
+    //   Exercise(name: 'Bench Press', sets: []), // Add sets as per your model
+    //   Exercise(name: 'Squat', sets: []),
+    //   Exercise(name: 'Deadlift', sets: []),
+    //   // Add more exercises as needed
+    // ];
+
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: Text('Exercise Navigator')),
+        body:
+            ExerciseNavigator(exercises: exercises), // pass in workout instead
       ),
     );
   }
@@ -122,15 +176,15 @@ class BigCard extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.all(20.0),
-          child: Set(),
+          //child: Set(),
         ),
         Padding(
           padding: const EdgeInsets.all(20.0),
-          child: Set(),
+          //child: Set(),
         ),
         Padding(
           padding: const EdgeInsets.all(20.0),
-          child: Set(),
+          //child: Set(),
         )
       ],
     );
@@ -138,9 +192,10 @@ class BigCard extends StatelessWidget {
 }
 
 class Set extends StatelessWidget {
-  const Set({
-    super.key,
-  });
+  final int? weight;
+  final int? reps;
+
+  const Set({super.key, required this.weight, required this.reps});
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +206,7 @@ class Set extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               decoration: InputDecoration(
-                hintText: 'weight',
+                hintText: weight.toString(),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0), // Rounded corners
                 ),
@@ -164,7 +219,7 @@ class Set extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               decoration: InputDecoration(
-                hintText: 'reps',
+                hintText: reps.toString(),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0), // Rounded corners
                 ),
@@ -242,7 +297,6 @@ class WorkingSet {
   }
 }
 
-
 // example json
 
 // {
@@ -277,3 +331,64 @@ class WorkingSet {
 //     ]
 //   }
 // }
+
+// GPT TEST
+
+class ExerciseNavigator extends StatefulWidget {
+  final List<Exercise> exercises;
+
+  ExerciseNavigator({Key? key, required this.exercises}) : super(key: key);
+
+  @override
+  _ExerciseNavigatorState createState() => _ExerciseNavigatorState();
+}
+
+class _ExerciseNavigatorState extends State<ExerciseNavigator> {
+  int currentIndex = 0;
+
+  void nextExercise() {
+    if (currentIndex < widget.exercises.length - 1) {
+      setState(() {
+        currentIndex++;
+      });
+    }
+  }
+
+  void previousExercise() {
+    if (currentIndex > 0) {
+      setState(() {
+        currentIndex--;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Exercise currentExercise = widget.exercises[currentIndex];
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          currentExercise.name!,
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+        ...currentExercise.sets!.map((set) => Set(
+              weight: set.weight,
+              reps: set.reps,
+            )),
+        SizedBox(height: 20),
+        ElevatedButton(
+          onPressed: previousExercise,
+          child: Text('Back'),
+        ),
+        ElevatedButton(
+          onPressed: nextExercise,
+          child: Text('Next'),
+        ),
+      ],
+    );
+  }
+}
