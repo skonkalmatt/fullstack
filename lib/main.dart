@@ -30,6 +30,11 @@ class MyAppState extends ChangeNotifier {
 
   String currentExercise = "";
   int i = 0;
+
+  MyAppState() {
+    getNextExercise();
+  }
+
   void getNext() {
     current = WordPair.random();
     notifyListeners();
@@ -109,10 +114,77 @@ class BigCard extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           //child: Text(pair.asUpperCase),
         ),
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(exercise.toUpperCase()),
+          ),
+        ),
         Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(exercise.toUpperCase()),
+          padding: const EdgeInsets.all(20.0),
+          child: Set(),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Set(),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Set(),
         )
+      ],
+    );
+  }
+}
+
+class Set extends StatelessWidget {
+  const Set({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'weight',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0), // Rounded corners
+                ),
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'reps',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0), // Rounded corners
+                ),
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'rpe',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0), // Rounded corners
+                ),
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }
