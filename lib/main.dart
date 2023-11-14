@@ -1,6 +1,7 @@
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'pages/login_page.dart';
 
 import 'dart:convert';
 
@@ -70,15 +71,20 @@ class MyApp extends StatelessWidget {
     // ];
 
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('FullStack'),
-          centerTitle: true,
-        ),
-        body:
-            ExerciseNavigator(exercises: exercises), // pass in workout instead
-      ),
+      debugShowCheckedModeBanner: false,
+      home: LoginPage(),
     );
+
+    // return MaterialApp(
+    //   home: Scaffold(
+    //     appBar: AppBar(
+    //       title: Text('FullStack'),
+    //       centerTitle: true,
+    //     ),
+    //     body:
+    //         ExerciseNavigator(exercises: exercises), // pass in workout instead
+    //   ),
+    // );
   }
 }
 
