@@ -1,11 +1,18 @@
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
+import 'package:namer_app/pages/auth_page.dart';
 import 'package:provider/provider.dart';
-import 'pages/login_page.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 import 'dart:convert';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(MyApp());
 }
 
@@ -29,39 +36,43 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String jsonString = '''{
-  "exercises": [
-    {
-      "name": "Bench Press",
-      "sets": [
-        {"reps": 10, "weight": 50},
-        {"reps": 8, "weight": 60},
-        {"reps": 6, "weight": 70}
-      ]
-    },
-    {
-      "name": "Squat",
-      "sets": [
-        {"reps": 10, "weight": 80},
-        {"reps": 8, "weight": 90},
-        {"reps": 6, "weight": 100}
-      ]
-    },
-    {
-      "name": "Deadlift",
-      "sets": [
-        {"reps": 5, "weight": 100},
-        {"reps": 5, "weight": 120},
-        {"reps": 5, "weight": 140}
-      ]
-    }
-  ]
-}''';
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: AuthPage(),
+    );
+//     String jsonString = '''{
+//   "exercises": [
+//     {
+//       "name": "Bench Press",
+//       "sets": [
+//         {"reps": 10, "weight": 50},
+//         {"reps": 8, "weight": 60},
+//         {"reps": 6, "weight": 70}
+//       ]
+//     },
+//     {
+//       "name": "Squat",
+//       "sets": [
+//         {"reps": 10, "weight": 80},
+//         {"reps": 8, "weight": 90},
+//         {"reps": 6, "weight": 100}
+//       ]
+//     },
+//     {
+//       "name": "Deadlift",
+//       "sets": [
+//         {"reps": 5, "weight": 100},
+//         {"reps": 5, "weight": 120},
+//         {"reps": 5, "weight": 140}
+//       ]
+//     }
+//   ]
+// }''';
 
-    Map<String, dynamic> jsonMap = json.decode(jsonString);
-    List<dynamic> jsonExercises = jsonMap['exercises'];
-    List<Exercise> exercises =
-        jsonExercises.map((json) => Exercise.fromJson(json)).toList();
+//     Map<String, dynamic> jsonMap = json.decode(jsonString);
+//     List<dynamic> jsonExercises = jsonMap['exercises'];
+//     List<Exercise> exercises =
+//         jsonExercises.map((json) => Exercise.fromJson(json)).toList();
 
     // List<Exercise> exercises = [
     //   Exercise(name: 'Bench Press', sets: []), // Add sets as per your model
@@ -69,11 +80,6 @@ class MyApp extends StatelessWidget {
     //   Exercise(name: 'Deadlift', sets: []),
     //   // Add more exercises as needed
     // ];
-
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: LoginPage(),
-    );
 
     // return MaterialApp(
     //   home: Scaffold(

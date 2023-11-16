@@ -3,65 +3,73 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:namer_app/components/my_button.dart';
 import 'package:namer_app/components/my_textfield.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'workout_navigator.dart';
 
 class LoginPage extends StatelessWidget {
-  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
 
-  final passowrdController = TextEditingController();
+  final passowordController = TextEditingController();
 
   LoginPage({
     super.key,
   });
 
-  void signUserIn(BuildContext context) {
-    String jsonString = '''{
-  "exercises": [
-    {
-      "name": "Bench Press",
-      "sets": [
-        {"reps": 10, "weight": 50},
-        {"reps": 8, "weight": 60},
-        {"reps": 6, "weight": 70}
-      ]
-    },
-    {
-      "name": "Squat",
-      "sets": [
-        {"reps": 10, "weight": 80},
-        {"reps": 8, "weight": 90},
-        {"reps": 6, "weight": 100}
-      ]
-    },
-    {
-      "name": "Deadlift",
-      "sets": [
-        {"reps": 5, "weight": 100},
-        {"reps": 5, "weight": 120},
-        {"reps": 5, "weight": 140}
-      ]
-    }
-  ]
-}''';
-
-    Map<String, dynamic> jsonMap = json.decode(jsonString);
-    List<dynamic> jsonExercises = jsonMap['exercises'];
-    List<Exercise> exercises =
-        jsonExercises.map((json) => Exercise.fromJson(json)).toList();
-
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => SecondScreen()));
+  void signUserIn(BuildContext context) async {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text, password: passowordController.text);
   }
+//     String jsonString = '''{
+//   "exercises": [
+//     {
+//       "name": "Bench Press",
+//       "sets": [
+//         {"reps": 10, "weight": 50},
+//         {"reps": 8, "weight": 60},
+//         {"reps": 6, "weight": 70}
+//       ]
+//     },
+//     {
+//       "name": "Squat",
+//       "sets": [
+//         {"reps": 10, "weight": 80},
+//         {"reps": 8, "weight": 90},
+//         {"reps": 6, "weight": 100}
+//       ]
+//     },
+//     {
+//       "name": "Deadlift",
+//       "sets": [
+//         {"reps": 5, "weight": 100},
+//         {"reps": 5, "weight": 120},
+//         {"reps": 5, "weight": 140}
+//       ]
+//     }
+//   ]
+// }''';
+
+  // Map<String, dynamic> jsonMap = json.decode(jsonString);
+  // List<dynamic> jsonExercises = jsonMap['exercises'];
+  // List<Exercise> exercises =
+  //     jsonExercises.map((json) => Exercise.fromJson(json)).toList();
+
+  // Navigator.push(
+  //     context, MaterialPageRoute(builder: (context) => SecondScreen()));
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          title: Text('FullStack'),
+          centerTitle: true,
+        ),
         backgroundColor: Colors.grey[400],
         body: SafeArea(
             child: Column(
           children: [
-            const SizedBox(height: 50),
+            const SizedBox(height: 100),
             ClipOval(
                 child: Image.asset(
               'lib/assets/fullstack-logo-dalle-2.png',
@@ -75,13 +83,13 @@ class LoginPage extends StatelessWidget {
             ),
             const SizedBox(height: 25),
             MyTextField(
-              controller: usernameController,
-              hintText: 'username',
+              controller: emailController,
+              hintText: 'email',
               obscureText: false,
             ),
             const SizedBox(height: 25),
             MyTextField(
-              controller: passowrdController,
+              controller: passowordController,
               hintText: 'password',
               obscureText: true,
             ),
@@ -121,6 +129,14 @@ class SecondScreen extends StatelessWidget {
     },
     {
       "name": "Deadlift",
+      "sets": [
+        {"reps": 5, "weight": 100},
+        {"reps": 5, "weight": 120},
+        {"reps": 5, "weight": 140}
+      ]
+    },
+     {
+      "name": "Face pull",
       "sets": [
         {"reps": 5, "weight": 100},
         {"reps": 5, "weight": 120},
